@@ -4,7 +4,7 @@ name: Build & Deploy to DOKS
 on:
   push:
     branches:
-      - main
+      - staging
 
 env:
   REGISTRY: registry.digitalocean.com/escrow-mobileapp-registry
