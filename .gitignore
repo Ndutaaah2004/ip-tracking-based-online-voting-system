@@ -1,0 +1,2 @@
+# Local K8s secret (use k8s/secret.example.yaml as template)
+k8s/secret.yaml
