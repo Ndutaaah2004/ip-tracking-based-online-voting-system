@@ -17,9 +17,6 @@ spec:
           image: registry.digitalocean.com/escrow-mobileapp-registry/voting-system-test:{{IMAGE_TAG}}
           ports:
             - containerPort: 80
-          envFrom:
-            - secretRef:
-                name: escrow-auth-env
           resources:
             requests:
               memory: "150Mi"
