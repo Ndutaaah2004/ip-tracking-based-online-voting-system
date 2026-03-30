@@ -1,9 +1,9 @@
 <?php
 
-$host = getenv('DB_HOST') ?: 'private-db-mysql-ams3-57287-do-user-23404159-0.k.db.ondigitalocean.com';
-$user = getenv('DB_USER') ?: 'app_user';
-$password = getenv('DB_PASSWORD') !== false ? getenv('DB_PASSWORD') : 'StrongPassword123!';
-$database = getenv('DB_NAME') ?: 'voting_system';
+$host = getenv('DB_HOST');
+$user = getenv('DB_USER');
+$password = getenv('DB_PASSWORD');
+$database = getenv('DB_NAME');
 $port = 25060;
 
 $conn = new mysqli($host, $user, $password, $database,$port);
