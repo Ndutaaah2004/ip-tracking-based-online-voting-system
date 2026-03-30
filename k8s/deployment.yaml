@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: voting-system-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: voting-system-test
+  template:
+    metadata:
+      labels:
+        app: voting-system-test
+    spec:
+      containers:
+        - name: voting-system-test
+          image: registry.digitalocean.com/escrow-mobileapp-registry/voting-system-test:{{IMAGE_TAG}}
+          ports:
+            - containerPort: 80
+          envFrom:
+            - secretRef:
+                name: escrow-auth-env
+          resources:
+            requests:
+              memory: "150Mi"
+            limits:
+              memory: "300Mi"
