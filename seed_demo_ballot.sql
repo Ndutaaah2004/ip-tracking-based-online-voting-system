@@ -14,3 +14,5 @@ INSERT INTO ballot_options (election_id, label, sort_order) VALUES
 (@eid, 'Alex Morgan', 1),
 (@eid, 'Jordan Lee', 2),
 (@eid, 'Sam Rivera', 3);
+
+
