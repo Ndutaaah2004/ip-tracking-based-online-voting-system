@@ -36,7 +36,7 @@ $email = htmlspecialchars($_SESSION['email'] ?? '', ENT_QUOTES, 'UTF-8');
     <main class="dash-main">
         <section class="dash-welcome">
             <h2>Staff console</h2>
-            <p>Welcome, <?php echo $name; ?>. Use this area to manage elections, candidates, and results when those tools are connected.</p>
+            <p>Welcome, <?php echo $name; ?>. Use this area to manage the elections, candidates, and results when those tools are connected.</p>
             <span class="dash-badge staff">Staff</span>
         </section>
 
