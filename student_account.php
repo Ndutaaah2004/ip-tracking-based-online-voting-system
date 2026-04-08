@@ -64,7 +64,7 @@ require_once __DIR__ . '/includes/student_header.php';
             <ul>
                 <li>Sign out when using shared or lab computers.</li>
                 <li>Use a unique password you do not reuse on other sites.</li>
-                <li>Never share your login with anyone else.</li>
+                <li>Never share your login details with anyone else.</li>
             </ul>
         </div>
     </section>
