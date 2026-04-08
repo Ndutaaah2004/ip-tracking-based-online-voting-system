@@ -12,7 +12,7 @@ require_once __DIR__ . '/includes/student_header.php';
 <main class="dash-main">
     <section class="dash-welcome">
         <h2>Hello, <?php echo $studentName; ?></h2>
-        <p>Use the navigation above to open ballots, review your vote history, or manage your account password.</p>
+        <p>Use the navigation above to open the ballots, review your vote history, or manage your account password.</p>
         <span class="dash-badge student">Student</span>
     </section>
 
