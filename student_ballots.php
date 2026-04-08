@@ -36,7 +36,7 @@ $listError = isset($_GET['error']) ? trim((string) $_GET['error']) : '';
 <main class="dash-main">
     <section class="dash-panel">
         <h2 class="dash-panel-title">Active ballots</h2>
-        <p class="dash-panel-lead">Ballots open right now. You can vote once per election. After you submit, your choice is recorded in <a href="student_history.php">vote history</a>.</p>
+        <p class="dash-panel-lead">Ballots are open right now. You can vote once per election. After that submit, and your choice is recorded <a href="student_history.php">vote history</a>.</p>
 
         <?php if ($listError !== ''): ?>
             <div class="dash-alert dash-alert-error"><?php echo htmlspecialchars($listError, ENT_QUOTES, 'UTF-8'); ?></div>
