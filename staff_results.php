@@ -94,7 +94,7 @@ if ($detailId > 0 && $election):
 <main class="dash-main">
     <div class="staff-toolbar staff-toolbar-actions">
         <p class="dash-back"><a href="staff_results.php"><i class="fas fa-arrow-left"></i> All results</a></p>
-        <a href="staff_results_pdf.php?e=<?php echo $detailId; ?>" class="btn-dash btn-dash-primary"><i class="fas fa-file-pdf"></i> Download PDF</a>
+        <a href="staff_results_pdf.php?e=<?php echo $detailId; ?>" class="btn-dash btn-dash-primary" target="_blank" rel="noopener"><i class="fas fa-file-pdf"></i> PDF report</a>
     </div>
 
     <section class="dash-panel">

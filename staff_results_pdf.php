@@ -3,19 +3,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/includes/staff_bootstrap.php';
-
-$autoload = __DIR__ . '/vendor/autoload.php';
-if (!is_file($autoload)) {
-    http_response_code(503);
-    header('Content-Type: text/plain; charset=UTF-8');
-    echo 'PDF export requires Composer dependencies. From the project root, run: composer install';
-    exit;
-}
-require_once $autoload;
-
-require_once __DIR__ . '/includes/staff_results_pdf_html.php';
-
-use Dompdf\Dompdf;
+require_once __DIR__ . '/includes/staff_results_print_html.php';
 
 $detailId = isset($_GET['e']) ? (int) $_GET['e'] : 0;
 if ($detailId <= 0) {
@@ -74,10 +62,10 @@ if ($now < $o) {
     $status = 'open';
 }
 
-$generatedAt = staff_pdf_h(date('M j, Y g:i A T'));
+$generatedAt = staff_report_h(date('M j, Y g:i A T'));
 $staffRaw = isset($_SESSION['username']) ? (string) $_SESSION['username'] : 'Staff';
 
-$html = staff_build_results_pdf_html(
+$html = staff_build_results_report_html(
     $election,
     $tallies,
     $voteTotal,
@@ -85,15 +73,9 @@ $html = staff_build_results_pdf_html(
     $turnoutPct,
     $status,
     $generatedAt,
-    $staffRaw
+    $staffRaw,
+    $detailId
 );
 
-$dompdf = new Dompdf();
-$dompdf->getOptions()->setDefaultFont('DejaVu Sans');
-$dompdf->loadHtml($html, 'UTF-8');
-$dompdf->setPaper('A4', 'portrait');
-$dompdf->render();
-
-$slug = staff_results_pdf_filename_slug((string) $election['title']);
-$filename = 'election-results-' . $detailId . '-' . $slug . '.pdf';
-$dompdf->stream($filename, ['Attachment' => true]);
+header('Content-Type: text/html; charset=UTF-8');
+echo $html;
