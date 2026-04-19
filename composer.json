@@ -1,0 +1,11 @@
+{
+    "name": "voting_system/app",
+    "description": "Student voting system",
+    "require": {
+        "php": ">=8.0",
+        "dompdf/dompdf": "^3.0"
+    },
+    "config": {
+        "sort-packages": true
+    }
+}

@@ -1070,6 +1070,14 @@ body {
     margin-bottom: 1.25rem;
 }
 
+.staff-toolbar-actions {
+    align-items: center;
+}
+
+.staff-toolbar-actions .dash-back {
+    margin-bottom: 0;
+}
+
 .staff-panel-lead {
     margin-bottom: 0;
 }

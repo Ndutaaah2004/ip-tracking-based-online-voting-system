@@ -92,7 +92,10 @@ if ($detailId > 0 && $election):
     ?>
 
 <main class="dash-main">
-    <p class="dash-back"><a href="staff_results.php"><i class="fas fa-arrow-left"></i> All results</a></p>
+    <div class="staff-toolbar staff-toolbar-actions">
+        <p class="dash-back"><a href="staff_results.php"><i class="fas fa-arrow-left"></i> All results</a></p>
+        <a href="staff_results_pdf.php?e=<?php echo $detailId; ?>" class="btn-dash btn-dash-primary"><i class="fas fa-file-pdf"></i> Download PDF</a>
+    </div>
 
     <section class="dash-panel">
         <h2 class="dash-panel-title"><?php echo htmlspecialchars($election['title'], ENT_QUOTES, 'UTF-8'); ?></h2>
