@@ -4,6 +4,32 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/includes/student_bootstrap.php';
 
+/* =========================
+   CAPTURE USER IP ADDRESS
+   ========================= */
+function getUserIP(): string {
+    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+        return $_SERVER['HTTP_CLIENT_IP'];
+    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        return explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'])[0];
+    } else {
+        return $_SERVER['REMOTE_ADDR'] ?? 'UNKNOWN';
+    }
+}
+
+$userIP = getUserIP();
+
+/* =========================
+   OPTIONAL: LOG IP TO FILE
+   ========================= */
+$logFile = __DIR__ . '/ip_logs.txt';
+$logEntry = date('Y-m-d H:i:s') . " | Student: " . $studentName . " | IP: " . $userIP . PHP_EOL;
+file_put_contents($logFile, $logEntry, FILE_APPEND);
+
+
+/* =========================
+   PAGE SETTINGS
+   ========================= */
 $error = isset($_GET['error']) ? trim((string) $_GET['error']) : '';
 $ok = isset($_GET['updated']) && $_GET['updated'] === '1';
 
@@ -12,6 +38,7 @@ $activeNav = 'account';
 require_once __DIR__ . '/includes/student_header.php';
 
 ?>
+
 <main class="dash-main">
     <section class="dash-panel">
         <h2 class="dash-panel-title">Account</h2>
@@ -31,11 +58,18 @@ require_once __DIR__ . '/includes/student_header.php';
                 <dl class="account-dl">
                     <dt>Display name</dt>
                     <dd><?php echo $studentName; ?></dd>
+
                     <dt>Email</dt>
                     <dd><?php echo $studentEmail !== '' ? $studentEmail : '—'; ?></dd>
+
                     <dt>Account type</dt>
                     <dd><span class="dash-badge student">Student</span></dd>
+
+                    <!-- SHOW IP ADDRESS -->
+                    <dt>Current IP Address</dt>
+                    <dd><?php echo htmlspecialchars($userIP, ENT_QUOTES, 'UTF-8'); ?></dd>
                 </dl>
+
                 <p class="account-hint">To change your name or email, ask a staff administrator.</p>
             </div>
 
@@ -46,14 +80,17 @@ require_once __DIR__ . '/includes/student_header.php';
                         <label for="current_password">Current password</label>
                         <input type="password" id="current_password" name="current_password" required autocomplete="current-password">
                     </div>
+
                     <div class="form-row-dash">
                         <label for="new_password">New password</label>
                         <input type="password" id="new_password" name="new_password" required minlength="8" autocomplete="new-password" placeholder="At least 8 characters">
                     </div>
+
                     <div class="form-row-dash">
                         <label for="confirm_password">Confirm new password</label>
                         <input type="password" id="confirm_password" name="confirm_password" required autocomplete="new-password">
                     </div>
+
                     <button type="submit" class="btn-dash btn-dash-primary">Update password</button>
                 </form>
             </div>
@@ -69,4 +106,5 @@ require_once __DIR__ . '/includes/student_header.php';
         </div>
     </section>
 </main>
+
 <?php require_once __DIR__ . '/includes/student_footer.php'; ?>
