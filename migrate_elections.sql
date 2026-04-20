@@ -5,7 +5,7 @@ USE voting_system;
 
 CREATE TABLE IF NOT EXISTS elections (
   id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-  title VARCHAR(255) NOT NULL,
+  title VARCHAR(254) NOT NULL,
   description TEXT,
   opens_at DATETIME NOT NULL,
   closes_at DATETIME NOT NULL,
@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS elections (
 CREATE TABLE IF NOT EXISTS ballot_options (
   id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   election_id INT UNSIGNED NOT NULL,
-  label VARCHAR(255) NOT NULL,
+  label VARCHAR(254) NOT NULL,
   sort_order INT UNSIGNED NOT NULL DEFAULT 0,
   CONSTRAINT fk_ballot_election FOREIGN KEY (election_id) REFERENCES elections (id) ON DELETE CASCADE,
   KEY idx_ballot_options_election (election_id)
