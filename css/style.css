@@ -905,6 +905,12 @@ body {
     background: #fafafa;
 }
 
+.data-table td.table-ip {
+    font-variant-numeric: tabular-nums;
+    font-size: 0.85rem;
+    color: #64748b;
+}
+
 .tag {
     display: inline-block;
     padding: 0.2rem 0.55rem;

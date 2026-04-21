@@ -4,13 +4,22 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/includes/staff_bootstrap.php';
 
+function staff_format_student_ip(?string $ip): string
+{
+    if ($ip === null || $ip === '') {
+        return '—';
+    }
+
+    return htmlspecialchars($ip, ENT_QUOTES, 'UTF-8');
+}
+
 $electionFilter = isset($_GET['election_id']) ? (int) $_GET['election_id'] : 0;
 
 $pageTitle = 'Voters';
 $activeNav = 'voters';
 require_once __DIR__ . '/includes/staff_header.php';
 
-$studentsSql = 'SELECT id, name, email, created_at FROM students ORDER BY created_at DESC';
+$studentsSql = 'SELECT id, name, email, created_at, registration_ip, last_login_ip FROM students ORDER BY created_at DESC';
 $sr = $conn->query($studentsSql);
 $students = $sr ? $sr->fetch_all(MYSQLI_ASSOC) : [];
 
@@ -76,6 +85,8 @@ SQL;
                             <th>Name</th>
                             <th>Email</th>
                             <th>Registered</th>
+                            <th>Registration IP</th>
+                            <th>Last login IP</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -84,6 +95,8 @@ SQL;
                                 <td><?php echo htmlspecialchars($s['name'], ENT_QUOTES, 'UTF-8'); ?></td>
                                 <td><?php echo htmlspecialchars($s['email'], ENT_QUOTES, 'UTF-8'); ?></td>
                                 <td><?php echo htmlspecialchars(date('M j, Y', strtotime($s['created_at'])), ENT_QUOTES, 'UTF-8'); ?></td>
+                                <td class="table-ip"><?php echo staff_format_student_ip($s['registration_ip'] ?? null); ?></td>
+                                <td class="table-ip"><?php echo staff_format_student_ip($s['last_login_ip'] ?? null); ?></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
