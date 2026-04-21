@@ -11,6 +11,6 @@ COPY . /var/www/html/
 
 RUN chown -R www-data:www-data /var/www/html
 
-EXPOSE 8
+EXPOSE 80
 
 CMD ["apache2-foreground"]
