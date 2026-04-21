@@ -35,7 +35,7 @@ $registered = isset($_GET['registered']);
                 <span class="auth-brand-icon"><i class="fas fa-lock-open"></i></span>
             </div>
             <h1>Welcome back</h1>
-            <p class="lead">Sign in with the email you used to register.</p>
+            <p class="lead">Sign in with your school email to register as a valid voter.</p>
 
             <?php if ($error !== ''): ?>
                 <div class="alert alert-error" role="alert"><?php echo htmlspecialchars($error); ?></div>
