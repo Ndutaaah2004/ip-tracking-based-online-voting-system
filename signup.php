@@ -58,7 +58,7 @@ file_put_contents($logFile, $logEntry, FILE_APPEND);
             </div>
 
             <h1>Create account</h1>
-            <p class="lead">Join as a student or staff member to access the voting platform.</p>
+            <p class="lead">Join as a student or staff member to access the voting platform.<br> Use your school email to register as a vaid voter</p>
 
             <?php if ($error !== ''): ?>
                 <div class="alert alert-error" role="alert">
