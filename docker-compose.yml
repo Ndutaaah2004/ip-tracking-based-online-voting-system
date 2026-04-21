@@ -16,7 +16,7 @@ services:
     image: mysql:8.0
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-voting_secret}
-      MYSQL_DATABASE: voting_system
+      MYSQL_DATABASE: voting_syste
     volumes:
       - mysql_data:/var/lib/mysql
       - ./schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
