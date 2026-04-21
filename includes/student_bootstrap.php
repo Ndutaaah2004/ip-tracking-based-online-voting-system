@@ -37,10 +37,13 @@ $userIP = getUserIP();
 $_SESSION['user_ip'] = $userIP;
 
 /* =========================
-   OPTIONAL: LOG IP TO FILE
+   LOG IP TO FILE
    ========================= */
 $logFile = __DIR__ . '/../ip_logs.txt';
-$logEntry = date('Y-m-d H:i:s') . " | Student ID: " . $_SESSION['user_id'] . " | IP: " . $userIP . PHP_EOL;
+$logEntry = date('Y-m-d H:i:s') . 
+            " | Student ID: " . $_SESSION['user_id'] . 
+            " | IP: " . $userIP . PHP_EOL;
+
 file_put_contents($logFile, $logEntry, FILE_APPEND);
 
 
@@ -50,5 +53,10 @@ file_put_contents($logFile, $logEntry, FILE_APPEND);
 $studentId = (int) $_SESSION['user_id'];
 $studentName = htmlspecialchars($_SESSION['username'] ?? 'Student', ENT_QUOTES, 'UTF-8');
 $studentEmail = htmlspecialchars($_SESSION['email'] ?? '', ENT_QUOTES, 'UTF-8');
+
+/* =========================
+   READY-TO-USE DISPLAY VALUE
+   ========================= */
+$displayIP = htmlspecialchars($userIP, ENT_QUOTES, 'UTF-8');
 
 ?>
