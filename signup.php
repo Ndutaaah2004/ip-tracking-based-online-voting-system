@@ -93,7 +93,7 @@ file_put_contents($logFile, $logEntry, FILE_APPEND);
 
                 <div class="form-group">
                     <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required placeholder="you@example.com" autocomplete="email">
+                    <input type="email" id="email" name="email" required placeholder="you@zetech.ac.ke" autocomplete="email">
                 </div>
 
                 <div class="form-group">
