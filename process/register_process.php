@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../config/config.php';
+require_once __DIR__ . '/../includes/ip_helpers.php';
 
 function redirect_signup_error(string $msg): void
 {
@@ -51,17 +52,19 @@ if ($check->get_result()->num_rows > 0) {
 }
 $check->close();
 
+$registrationIp = get_client_ip();
+
 if ($role === 'student') {
-    $stmt = $conn->prepare('INSERT INTO students (name, email, password) VALUES (?, ?, ?)');
+    $stmt = $conn->prepare('INSERT INTO students (name, email, password, registration_ip) VALUES (?, ?, ?, ?)');
 } else {
-    $stmt = $conn->prepare('INSERT INTO staff (name, email, password) VALUES (?, ?, ?)');
+    $stmt = $conn->prepare('INSERT INTO staff (name, email, password, registration_ip) VALUES (?, ?, ?, ?)');
 }
 
 if (!$stmt) {
     redirect_signup_error('Registration failed. Please try again.');
 }
 
-$stmt->bind_param('sss', $name, $email, $hash);
+$stmt->bind_param('ssss', $name, $email, $hash, $registrationIp);
 $ok = $stmt->execute();
 $stmt->close();
 

@@ -390,6 +390,22 @@ body {
 .dash-user {
     font-size: 0.875rem;
     color: #c7d2fe;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.35rem 0.75rem;
+}
+
+.dash-ip {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.dash-ip i {
+    margin-right: 0.25rem;
+    opacity: 0.85;
 }
 
 .dash-logout {

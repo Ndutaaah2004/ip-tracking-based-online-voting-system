@@ -2,6 +2,7 @@
 session_start();
 
 require_once __DIR__ . '/../config/config.php';
+require_once __DIR__ . '/../includes/ip_helpers.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: ../login.php');
@@ -36,11 +37,21 @@ if (!$row || !password_verify($password, $row['password'])) {
     exit;
 }
 
+$loginIp = get_client_ip();
+$uid = (int) $row['id'];
+$upd = $conn->prepare("UPDATE `$table` SET last_login_ip = ? WHERE id = ?");
+if ($upd) {
+    $upd->bind_param('si', $loginIp, $uid);
+    $upd->execute();
+    $upd->close();
+}
+
 session_regenerate_id(true);
-$_SESSION['user_id'] = (int) $row['id'];
+$_SESSION['user_id'] = $uid;
 $_SESSION['role'] = $role;
 $_SESSION['username'] = $row['name'];
 $_SESSION['email'] = $row['email'];
+$_SESSION['login_ip'] = $loginIp;
 
 if ($role === 'student') {
     header('Location: ../student_dashboard.php');

@@ -29,7 +29,7 @@ $activeNav = $activeNav ?? 'home';
             <a href="student_dashboard.php" class="dash-logo-link"><i class="fas fa-vote-yea"></i> Voting System</a>
         </h1>
         <nav class="dash-nav">
-            <span class="dash-user"><?php echo $studentName; ?><?php echo $studentEmail !== '' ? ' · ' . $studentEmail : ''; ?></span>
+            <span class="dash-user"><?php echo $studentName; ?><?php echo $studentEmail !== '' ? ' · ' . $studentEmail : ''; ?><span class="dash-ip" title="IP address recorded at sign-in"><i class="fas fa-network-wired" aria-hidden="true"></i> <?php echo $loginIpDisplay; ?></span></span>
             <a href="logout.php" class="dash-logout">Sign out</a>
         </nav>
     </header>
