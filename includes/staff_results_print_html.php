@@ -7,8 +7,19 @@ function staff_report_h(string $s): string
     return htmlspecialchars($s, ENT_QUOTES, 'UTF-8');
 }
 
+function staff_pdf_ip(?string $ip): string
+{
+    if ($ip === null || $ip === '') {
+        return '—';
+    }
+
+    return staff_report_h($ip);
+}
+
 /**
  * @param list<array<string, mixed>> $tallies
+ * @param list<array<string, mixed>> $votedRows
+ * @param list<array<string, mixed>> $notVotedRows
  */
 function staff_build_results_report_html(
     array $election,
@@ -19,7 +30,10 @@ function staff_build_results_report_html(
     string $status,
     string $generatedAt,
     string $staffLabel,
-    int $electionId
+    string $backHref,
+    string $backLinkLabel,
+    array $votedRows,
+    array $notVotedRows
 ): string {
     $title = staff_report_h((string) $election['title']);
     $desc = trim((string) ($election['description'] ?? ''));
@@ -60,8 +74,64 @@ HTML;
     }
 
     $staffEsc = staff_report_h($staffLabel);
-    $eid = (int) $electionId;
-    $backHref = staff_report_h('staff_results.php?e=' . $eid);
+    $backHrefEsc = staff_report_h($backHref);
+    $backLabelEsc = staff_report_h($backLinkLabel);
+
+    $votedTable = '';
+    if (count($votedRows) === 0) {
+        $votedTable = '<p class="voter-empty">No votes recorded for this election yet.</p>';
+    } else {
+        $vr = '';
+        foreach ($votedRows as $row) {
+            $n = staff_report_h((string) $row['name']);
+            $em = staff_report_h((string) $row['email']);
+            $rip = staff_pdf_ip(isset($row['registration_ip']) ? (string) $row['registration_ip'] : null);
+            $lip = staff_pdf_ip(isset($row['last_login_ip']) ? (string) $row['last_login_ip'] : null);
+            $vt = staff_report_h(date('M j, Y g:i A', strtotime((string) $row['voted_at'])));
+            $vr .= "<tr><td>{$n}</td><td>{$em}</td><td class=\"ip-cell\">{$rip}</td><td class=\"ip-cell\">{$lip}</td><td>{$vt}</td></tr>";
+        }
+        $votedTable = <<<HTML
+<table class="pdf-voters">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Registration IP</th>
+      <th>Last login IP</th>
+      <th>Voted at</th>
+    </tr>
+  </thead>
+  <tbody>{$vr}</tbody>
+</table>
+HTML;
+    }
+
+    $nvTable = '';
+    if (count($notVotedRows) === 0) {
+        $nvTable = '<p class="voter-empty">Every registered student has submitted a ballot for this election.</p>';
+    } else {
+        $nr = '';
+        foreach ($notVotedRows as $row) {
+            $n = staff_report_h((string) $row['name']);
+            $em = staff_report_h((string) $row['email']);
+            $rip = staff_pdf_ip(isset($row['registration_ip']) ? (string) $row['registration_ip'] : null);
+            $lip = staff_pdf_ip(isset($row['last_login_ip']) ? (string) $row['last_login_ip'] : null);
+            $nr .= "<tr><td>{$n}</td><td>{$em}</td><td class=\"ip-cell\">{$rip}</td><td class=\"ip-cell\">{$lip}</td></tr>";
+        }
+        $nvTable = <<<HTML
+<table class="pdf-voters">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Registration IP</th>
+      <th>Last login IP</th>
+    </tr>
+  </thead>
+  <tbody>{$nr}</tbody>
+</table>
+HTML;
+    }
 
     return <<<HTML
 <!DOCTYPE html>
@@ -256,6 +326,51 @@ HTML;
       font-style: italic;
       text-align: center;
     }
+    h3 {
+      font-size: 10pt;
+      color: #475569;
+      margin: 18px 0 8px 0;
+      font-weight: 700;
+    }
+    .voter-note {
+      font-size: 9pt;
+      color: #64748b;
+      margin: 0 0 12px 0;
+      line-height: 1.4;
+    }
+    .voter-empty {
+      font-size: 9.5pt;
+      color: #64748b;
+      font-style: italic;
+      margin: 0 0 14px 0;
+    }
+    .pdf-voters {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 8.5pt;
+      margin: 0 0 16px 0;
+    }
+    .pdf-voters th,
+    .pdf-voters td {
+      padding: 6px 8px;
+      border: 1px solid #e2e8f0;
+      text-align: left;
+      vertical-align: top;
+    }
+    .pdf-voters th {
+      background: #f8fafc;
+      font-weight: 700;
+      color: #475569;
+      font-size: 7.5pt;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .pdf-voters .ip-cell {
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+      font-size: 8pt;
+      color: #334155;
+    }
     .footer {
       margin-top: 28px;
       padding-top: 12px;
@@ -280,7 +395,7 @@ HTML;
 <body>
   <div class="sheet">
     <div class="print-bar">
-      <a href="{$backHref}">← Back to results</a>
+      <a href="{$backHrefEsc}">{$backLabelEsc}</a>
       <button type="button" onclick="window.print()">Print or save as PDF</button>
       <p class="print-hint">In the print dialog, choose <strong>Save as PDF</strong> (or “Microsoft Print to PDF”) to download a file — no extra software required.</p>
     </div>
@@ -324,6 +439,15 @@ HTML;
       <table class="tally-table">
         {$rows}
       </table>
+
+      <h2>Voter participation</h2>
+      <p class="voter-note">Registration and last-login IP addresses are shown as stored in the system (best-effort from the web server).</p>
+
+      <h3>Voted</h3>
+      {$votedTable}
+
+      <h3>Not voted</h3>
+      {$nvTable}
 
       <div class="footer">
         <strong>Generated</strong> {$generatedAt} · <strong>Prepared by</strong> {$staffEsc}<br>

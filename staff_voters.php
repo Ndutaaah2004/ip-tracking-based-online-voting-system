@@ -128,11 +128,15 @@ SQL;
             <?php if ($electionFilter > 0 && !$selectedElection): ?>
                 <div class="dash-alert dash-alert-error">Election not found.</div>
             <?php elseif ($electionFilter > 0 && $selectedElection): ?>
-                <h3 class="results-section-title"><?php echo htmlspecialchars($selectedElection['title'], ENT_QUOTES, 'UTF-8'); ?></h3>
+                <?php $selEid = (int) $selectedElection['id']; ?>
+                <div class="staff-toolbar staff-toolbar-actions staff-voters-report-bar">
+                    <h3 class="results-section-title staff-voters-election-title"><?php echo htmlspecialchars($selectedElection['title'], ENT_QUOTES, 'UTF-8'); ?></h3>
+                    <a href="staff_results_pdf.php?e=<?php echo $selEid; ?>&amp;ref=voters" class="btn-dash btn-dash-primary" target="_blank" rel="noopener"><i class="fas fa-file-pdf"></i> PDF report</a>
+                </div>
                 <p class="voters-count">
                     <strong><?php echo count($voted); ?></strong> voted ·
                     <strong><?php echo count($notVoted); ?></strong> not yet voted
-                    · <a href="staff_results.php?e=<?php echo (int) $selectedElection['id']; ?>" class="table-link">View tallies</a>
+                    · <a href="staff_results.php?e=<?php echo $selEid; ?>" class="table-link">View tallies</a>
                 </p>
 
                 <div class="voters-split">
